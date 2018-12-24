@@ -1,0 +1,27 @@
+Subject: yylex: Explicilty cast fprintf to void.
+
+Fix compile failed with flex 2.6.4:
+| grub_script.yy.c:19:22: error: statement with no effect [-Werror=unused-value]
+|  #define fprintf(...) 0
+| grub_script.yy.c:2367:2: note: in expansion of macro 'fprintf'
+|  fprintf( stderr, "%s\n", msg );
+|  ^~~~~~~
+---
+ grub-core/script/yylex.l | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/grub-core/script/yylex.l b/grub-core/script/yylex.l
+index 95b219170..7b44c37b7 100644
+--- a/grub-core/script/yylex.l
++++ b/grub-core/script/yylex.l
+@@ -91,7 +91,7 @@ typedef size_t yy_size_t;
+ #define stdin  0
+ #define stdout 0
+ 
+-#define fprintf(...) 0
++#define fprintf(...) (void)0
+ #define exit(...) grub_fatal("fatal error in lexer")
+ #endif
+ 
+-- 
+2.11.0
