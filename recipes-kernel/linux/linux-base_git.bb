@@ -29,6 +29,7 @@ SRC_URI += "file://ARM-fix-put_user-for-gcc-8.patch \
             file://0001-turn-off-Wattribute-alias.patch \
             file://powerpc-Disable-attribute-alias-warnings-from-gcc8.patch \
             file://powerpc-ptrace-Disable-array-bounds-warning-with-gcc.patch \
+            file://Fix-build-perf-failed-with-kernel-4.4.x.patch \
             "
 
 # use the common functions to merge multiple configs
