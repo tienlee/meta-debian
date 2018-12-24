@@ -18,5 +18,6 @@ SRC_URI += " \
     file://uclibc_musl_translation.patch \
     file://0001-Install-gio-querymodules-as-libexec_PROGRAM.patch \
     file://0010-Do-not-hardcode-python-path-into-various-tools.patch \
+    file://Avoid_using_host_command_to_executables.patch \
 "
 SRC_URI_append_class-natve = "file://relocate-modules.patch"
