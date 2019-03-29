@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Raspberry Pi - meta-debian</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "../";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="../1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="../2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="../3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="../3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="../3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="../4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="../4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="../4.bsp/4.2.pi.html" class="active"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="../community_resources.html">Community Resources</a></li><li class="affix"><a href="../license.html">LICENSE</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">meta-debian</h1> 
+
+                        <div class="right-buttons">
+                            <a href="../print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#raspberry-pi" id="raspberry-pi"><h1>Raspberry Pi</h1></a>
+<p>Get meta-raspberrypi at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi">https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi</a>.</p>
+<p>Tested with:</p>
+<pre><code>poky             : master:753e2a0ede4449917c75353b57f13bbafe70fac8
+meta-raspberrypi : master:1b990fb8e2c21fdfac97c72d471e658087ce7026
+meta-debian      : master:afcdd686ac74bf0fec81c579ed77019e34a3cb62
+</code></pre>
+<a class="header" href="#build" id="build"><h2>Build</h2></a>
+<ol>
+<li>
+<p>Setup build directory.</p>
+<pre><code class="language-sh">$ export TEMPLATECONF=meta-debian/conf
+$ source ./poky/oe-init-build-env build-pi
+</code></pre>
+</li>
+<li>
+<p>Add layer <code>meta-raspberrypi</code> to <code>conf/bblayers.conf</code>.</p>
+<pre><code class="language-sh">$ vi conf/bblayers.conf
+...
+BBLAYERS ?= &quot; \
+  /path/to/poky/meta \
+  /path/to/poky/meta-raspberrypi \
+  /path/to/poky/meta-debian \
+  &quot;
+</code></pre>
+</li>
+<li>
+<p>We do the test with Raspberry Pi 3, so set <code>MACHINE</code> to <code>raspberrypi3</code>.</p>
+<pre><code class="language-sh">$ vi conf/local.conf
+...
+MACHINE ??= &quot;raspberrypi3&quot;
+...
+</code></pre>
+</li>
+<li>
+<p>Use raspberrypi kernel.</p>
+<pre><code class="language-sh">$ vi conf/local.conf
+...
+LINUX_GIT_URI = &quot;git://github.com/raspberrypi&quot;
+LINUX_GIT_PROTOCOL = &quot;https&quot;
+LINUX_GIT_PREFIX = &quot;&quot;
+LINUX_GIT_REPO = &quot;linux.git&quot;
+LINUX_GIT_SRCREV = &quot;rpi-4.19.y&quot;
+
+LINUX_DEFCONFIG_raspberrypi0-wifi ?= &quot;bcmrpi_defconfig&quot;
+LINUX_DEFCONFIG_raspberrypi ?= &quot;bcmrpi_defconfig&quot;
+LINUX_DEFCONFIG_raspberrypi2 ?= &quot;bcm2709_defconfig&quot;
+LINUX_DEFCONFIG_raspberrypi3 ?= &quot;bcm2709_defconfig&quot;
+LINUX_DEFCONFIG_raspberrypi3-64 ?= &quot;bcmrpi3_defconfig&quot;
+</code></pre>
+</li>
+<li>
+<p>If the board is connected with a monitor, and we want login prompt on <code>tty1</code>:</p>
+<pre><code class="language-sh">$ vi conf/local.conf
+...
+SERIAL_CONSOLES_append = &quot; 115200;tty1&quot;
+</code></pre>
+</li>
+<li>
+<p>Build:</p>
+<pre><code class="language-sh">$ bitbake core-image-minimal
+</code></pre>
+</li>
+</ol>
+<p>After finish building, <code>tmp/deploy/images/raspberrypi3/core-image-minimal-raspberrypi3.rpi-sdimg</code> should be available.</p>
+<a class="header" href="#boot" id="boot"><h2>Boot</h2></a>
+<ol>
+<li>
+<p>Burn sdimg file to SD card using <a href="https://www.balena.io/etcher/">etcher</a> or <code>dd</code>:</p>
+<pre><code class="language-sh"># Assume /dev/sdb is target SD card
+$ sudo dd if=core-image-minimal-raspberrypi3.rpi-sdimg of=/dev/sdb
+</code></pre>
+</li>
+<li>
+<p>Boot the SD card on the board and login with <code>root</code> (no password).</p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../4.bsp/4.1.bbb.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../community_resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="../4.bsp/4.1.bbb.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="../community_resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

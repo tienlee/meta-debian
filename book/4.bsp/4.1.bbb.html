@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BeagleBone Black - meta-debian</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "../";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="../1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="../2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="../3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="../3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="../3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="../4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="../4.bsp/4.1.bbb.html" class="active"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="../4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="../community_resources.html">Community Resources</a></li><li class="affix"><a href="../license.html">LICENSE</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">meta-debian</h1> 
+
+                        <div class="right-buttons">
+                            <a href="../print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#beaglebone-black" id="beaglebone-black"><h1>BeagleBone Black</h1></a>
+<p>Get meta-ti at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/">https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/</a>.</p>
+<p>Tested with:</p>
+<pre><code>poky        : master:753e2a0ede4449917c75353b57f13bbafe70fac8
+meta-ti     : master:65a9fad567115d4335c90d83777fc1564008fe5f
+meta-debian : master:afcdd686ac74bf0fec81c579ed77019e34a3cb62
+</code></pre>
+<a class="header" href="#build" id="build"><h2>Build</h2></a>
+<ol>
+<li>
+<p>Setup build directory.</p>
+<pre><code class="language-sh">$ export TEMPLATECONF=meta-debian/conf
+$ source ./poky/oe-init-build-env build-bbb
+</code></pre>
+</li>
+<li>
+<p>Add <code>meta-ti</code> to <code>conf/bblayers.conf</code>.</p>
+<pre><code class="language-sh">$ vi conf/bblayers.conf
+...
+BBLAYERS ?= &quot; \
+  /path/to/poky/meta \
+  /path/to/poky/meta-ti \
+  /path/to/poky/meta-debian \
+  &quot;
+</code></pre>
+</li>
+<li>
+<p>Set <code>MACHINE</code> to <code>beaglebone</code>.</p>
+<pre><code class="language-sh">$ vi conf/local.conf
+...
+MACHINE ??= &quot;beaglebone&quot;
+...
+</code></pre>
+</li>
+<li>
+<p>Set default config for linux-base.</p>
+<pre><code class="language-sh">$ vi conf/local.conf
+...
+LINUX_DEFCONFIG = &quot;omap2plus_defconfig&quot;
+KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
+</code></pre>
+</li>
+<li>
+<p>Build.</p>
+<pre><code class="language-sh">$ bitbake core-image-minimal
+</code></pre>
+</li>
+</ol>
+<p>After finish building, these files in <code>tmp/deploy/images/beaglebone/</code> should be available:</p>
+<ul>
+<li>core-image-minimal-beaglebone.tar.xz</li>
+<li>MLO</li>
+<li>u-boot.img</li>
+</ul>
+<a class="header" href="#boot" id="boot"><h2>Boot</h2></a>
+<ol>
+<li>
+<p>Create two partitions on the SD card: BOOT (FAT32) and ROOT (ext4).</p>
+</li>
+<li>
+<p>Install the root file system.</p>
+<pre><code class="language-sh">sudo tar xf core-image-minimal-bbb.tar.xz -C /mount/dir/of/ROOT
+</code></pre>
+</li>
+<li>
+<p>Install the bootloader. If ROOT is 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
+<pre><code class="language-sh">$ cp MLO u-boot.img /mount/dir/of/BOOT
+$ vi /mount/dir/of/BOOT/uEnv.txt
+bootpart=0:2
+bootdir=/boot
+bootfile=zImage
+console=ttyO0,115200n8
+fdtaddr=0x81000000
+fdtfile=am335x-boneblack.dtb
+loadaddr=0x80008000
+mmcroot=/dev/mmcblk0p2 ro
+mmcrootfstype=ext4 rootwait
+mmcargs=setenv bootargs console=${console} root=${mmcroot} rootfstype=${mmcrootfstype}
+loadfdt=load mmc ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}
+loadimage=load mmc ${bootpart} ${loadaddr} ${bootdir}/${bootfile}
+uenvcmd=if run loadfdt; then echo Loaded ${fdtfile}; if run loadimage; then run mmcargs; bootz ${loadaddr} - ${fdtaddr}; fi; fi;
+</code></pre>
+</li>
+<li>
+<p>Connect <a href="https://elinux.org/Beagleboard:BeagleBone_Black_Serial">serial cable</a>
+to the board on jumper J1. We tested with Adafruit 4 Pin Cable which has 4 wires:
+Black, Green, White, Red. Just leave the RED wire unconnected.</p>
+<pre><code>J1   : [GND]   *   *   [RX]    [TX]   *
+Cable: [Black]         [Green] [White]
+</code></pre>
+<p>Boot the board.</p>
+<pre><code>$ sudo picocom -b 115200 /dev/ttyUSB0
+picocom v3.1
+
+port is        : /dev/ttyUSB0
+flowcontrol    : none
+baudrate is    : 115200
+...&lt;many logs&gt;
+
+U-Boot 2018.03-00002-gac9cce7c6a (Apr 05 2018 - 13:07:46 -0500), Build: jenkins-github_Bootloader-Builder-47
+
+CPU  : AM335X-GP rev 2.1
+I2C:   ready
+DRAM:  512 MiB
+....&lt;many logs&gt;
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 4.19.13-cip1 (oe-user@oe-host) (gcc version 8.3.0 (GCC)) #1 SMP Thu Mar 21 06:02:24 UTC 2019
+[    0.000000] CPU: ARMv7 Processor [413fc082] revision 2 (ARMv7), cr=10c5387d
+.....&lt;many logs&gt;
+starting pid 64, tty '': '/etc/init.d/rcS'
+starting pid 66, tty '/dev/ttyS0': '/sbin/getty 115200 ttyS0'
+
+Deby 10.0 beaglebone /dev/ttyS0
+
+beaglebone login:
+</code></pre>
+<p>Then login with <code>root</code> (no password).</p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../4.bsp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../4.bsp/4.2.pi.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="../4.bsp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="../4.bsp/4.2.pi.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

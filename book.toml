@@ -1,0 +1,7 @@
+[book]
+multilingual = false
+src = "src"
+title = "meta-debian"
+
+[build]
+create-missing = false

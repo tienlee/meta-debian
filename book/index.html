@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Getting Started - meta-debian</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">meta-debian</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#what-is-meta-debian" id="what-is-meta-debian"><h1>What is meta-debian?</h1></a>
+<p>meta-debian is a set of recipes (metadata) for the poky build system,
+which allows cross-building GNU/Linux images using Debian source packages.
+By enabling meta-debian, you can cross-build a small GNU/Linux image
+with Debian sources for multiple architectures.</p>
+<p>The main purpose of meta-debian is to provide reference Linux distribution
+for embedded systems satisfying the following needs.</p>
+<ul>
+<li>Long-term support</li>
+<li>Stability</li>
+<li>Wide embedded CPU support</li>
+<li>Customizability</li>
+</ul>
+<p>Currently, the following software versions are supported in meta-debian.</p>
+<ul>
+<li>Source code: Debian GNU/Linux 10 (buster)</li>
+<li>Build system: Yocto Project (master)</li>
+</ul>
+<a class="header" href="#quick-start" id="quick-start"><h1>Quick Start</h1></a>
+<p>meta-debian can be built in a docker container or on a Linux machine (native build).</p>
+<a class="header" href="#setup-build-environment" id="setup-build-environment"><h3>Setup build environment</h3></a>
+<p>Clone meta-debian:</p>
+<pre><code class="language-sh">$ git clone -b master https://github.com/meta-debian/meta-debian.git
+</code></pre>
+<ul>
+<li>
+<p>For docker build:</p>
+<pre><code class="language-sh">$ cd meta-debian
+$ make -C docker
+</code></pre>
+</li>
+<li>
+<p>For native build:</p>
+<ul>
+<li>
+<p>Install essential packages poky requires into your host system according to
+<a href="https://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-packages-for-the-build-host">https://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-packages-for-the-build-host</a></p>
+<pre><code class="language-sh">$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+xz-utils debianutils iputils-ping
+</code></pre>
+<p>NOTE: The following three packages have version limitation</p>
+<ul>
+<li>git: 1.8.3.1 or greater</li>
+<li>tar: 1.27 or greater</li>
+<li>python: 3.4.0 or greater</li>
+</ul>
+</li>
+<li>
+<p>Setup repositories</p>
+<pre><code class="language-sh">$ git clone -b master git://git.yoctoproject.org/poky.git
+$ mv meta-debian poky/
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="#build" id="build"><h3>Build</h3></a>
+<pre><code class="language-sh">export TEMPLATECONF=meta-debian/conf
+source ./poky/oe-init-build-env
+</code></pre>
+<p>You can change the target machine by setting <code>MACHINE</code> variable
+in <code>conf/local.conf</code> to one of the following machines.</p>
+<ul>
+<li>qemux86 (default)</li>
+<li>qemux86-64</li>
+<li>qemuarm</li>
+<li>qemuarm64</li>
+<li>qemuppc</li>
+<li>qemumips</li>
+</ul>
+<p>For example, the target machine is set to QEMU ARM by adding
+the following difinition to <code>conf/local.conf</code>.</p>
+<pre><code>MACHINE = &quot;qemuarm&quot;
+</code></pre>
+<p>Now, the build system is ready.
+Build Linux kernel and the minimal rootfs by the following command.
+It takes a while to complete (more than 30 minutes).</p>
+<pre><code class="language-sh">bitbake core-image-minimal
+</code></pre>
+<a class="header" href="#run-the-built-linux-on-qemu" id="run-the-built-linux-on-qemu"><h3>Run the built Linux on QEMU</h3></a>
+<p>Please replace <code>${MACHINE}</code> by the target machine
+you selected in the above step.</p>
+<p>NOTE: Confirm that the tun module, which runqemu depends on,
+is correctly loaded in your system.</p>
+<pre><code class="language-sh">runqemu ${MACHINE} nographic
+</code></pre>
+<p>After boot, you can login as <code>root</code> without password.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

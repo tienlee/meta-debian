@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Components - meta-debian</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">var path_to_root = "";</script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html" class="active"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">meta-debian</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#components" id="components"><h1>Components</h1></a>
+<p>To handle Debian package source code, <code>meta-debian</code> needs to provide
+some extra functions/tasks. The following contents are not all but
+main components which are defined and usually used in <code>meta-debian</code>.</p>
+<a class="header" href="#classes" id="classes"><h2>Classes</h2></a>
+<a class="header" href="#debian-packagebbclass" id="debian-packagebbclass"><h4>debian-package.bbclass</h4></a>
+<p>Class <code>debian-package</code> is inherited by recipes.
+This class provides tasks to extract source code and apply Debian patches.</p>
+<a class="header" href="#debian-sourcebbclass" id="debian-sourcebbclass"><h4>debian-source.bbclass</h4></a>
+<p>Class <code>debian-source</code> is inherited by <code>conf/distro/deby.conf</code>.
+This class provides an eventhandler to fetch information
+from Debian apt repository. This information will be
+used for downloading source code.</p>
+<a class="header" href="#tasks" id="tasks"><h2>Tasks</h2></a>
+<a class="header" href="#do_debian_unpack_extra" id="do_debian_unpack_extra"><h4>do_debian_unpack_extra</h4></a>
+<p>This is a task, defined by <code>debian-package.bbclass</code> to unpack
+Debian source code into one folder.
+This task runs after <code>do_unpack</code> and before <code>do_debian_patch</code></p>
+<a class="header" href="#do_debian_patch" id="do_debian_patch"><h4>do_debian_patch</h4></a>
+<p>This is a task, defined by <code>debian-package.bbclass</code> to apply Debian patches.
+These Debian patches can be applied by <code>quilt</code>,
+<code>dpatch</code> or manually with <code>patch</code>.
+This task runs after <code>do_debian_unpack_extra</code> and before <code>do_patch</code>.</p>
+<a class="header" href="#debian_source_eventhandler" id="debian_source_eventhandler"><h4>debian_source_eventhandler</h4></a>
+<p>This is an eventhandler, defined by <code>debian-source.bbclass</code>
+to generate Debian package source code information: <code>PV</code>, <code>URI</code>, <code>checksum</code>.
+These kinds of information are fetched from
+<code>dists/buster/main/source/Sources.xz</code> in Debian apt repository.
+This eventhandler runs when <code>bb.event.ParseStarted</code> is fired.</p>
+<a class="header" href="#variables" id="variables"><h2>Variables</h2></a>
+<a class="header" href="#debian_src_uri" id="debian_src_uri"><h4>DEBIAN_SRC_URI</h4></a>
+<p>URI to fetch Debian package source code.
+By default, this variable is generated automatically in
+<code>recipes-debian/sources/&lt;source_name&gt;.inc</code>.</p>
+<p>Example:</p>
+<pre><code class="language-sh">DEBIAN_SRC_URI = &quot; \
+    ${DEBIAN_MIRROR}/main/f/flex/flex_2.6.4-6.2.dsc;name=flex_2.6.4-6.2.dsc \
+    ${DEBIAN_MIRROR}/main/f/flex/flex_2.6.4.orig.tar.gz;name=flex_2.6.4.orig.tar.gz \
+    ${DEBIAN_MIRROR}/main/f/flex/flex_2.6.4-6.2.diff.gz;name=flex_2.6.4-6.2.diff.gz;apply=no \
+&quot;
+</code></pre>
+<a class="header" href="#debian_unpack_dir" id="debian_unpack_dir"><h4>DEBIAN_UNPACK_DIR</h4></a>
+<p>Path to source code directory after unpacked.
+This variable is initialized in <code>debian-package.bbclass</code>
+with default value <code>$.{WORKDIR}/${BP}</code></p>
+<a class="header" href="#debian_patch_type" id="debian_patch_type"><h4>DEBIAN_PATCH_TYPE</h4></a>
+<p>Decide action to apply patches for the source package.
+Normally, this variable will only need to be set if
+patch type cannot be detected by <code>debian/source/format</code>.
+Possible value:</p>
+<ul>
+<li><code>quilt</code>: if package uses <code>quilt</code> for applying patches.</li>
+<li><code>dpatch</code>: if package uses <code>dpatch</code> for applying patches.</li>
+<li><code>nopatch</code>: if there is no Debian patch.</li>
+<li><code>abnormal</code>: if none of the three conditions above matched.
+Recipe will need to define its own way to apply patches by
+defining function <code>debian_patch_abnormal</code> or overwriting <code>do_debian_patch</code>.</li>
+</ul>
+<a class="header" href="#debian_quilt_patches" id="debian_quilt_patches"><h4>DEBIAN_QUILT_PATCHES</h4></a>
+<p>Path to Debian patches folder, by default is
+<code>${DEBIAN_UNPACK_DIR}/debian/patches</code>.
+In some cases, this variable need to be unset because
+<code>DEBIAN_PATCH_TYPE</code> is <code>quilt</code> but there is no patch.
+For example, package <code>gawk</code> has <code>debian/source/format</code> is <code>3.0 (quilt)</code>
+but there is no patch in <code>debian</code> subfolder.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="1.getting_started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="3.development.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="1.getting_started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="3.development.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
