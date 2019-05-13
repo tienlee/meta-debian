@@ -32,7 +32,10 @@
     </head>
     <body class="light">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">var path_to_root = "";</script>
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script type="text/javascript">
@@ -54,7 +57,7 @@
         <script type="text/javascript">
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
-            if (theme === null || theme === undefined) { theme = 'light'; }
+            if (theme === null || theme === undefined) { theme = default_theme; }
             document.body.className = theme;
             document.querySelector('html').className = theme + ' js';
         </script>
@@ -72,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
+            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="5.appendix.html"><strong aria-hidden="true">5.</strong> Appendix</a></li><li class="affix"><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -89,7 +92,7 @@
                                 <i class="fa fa-paint-brush"></i>
                             </button>
                             <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -108,6 +111,7 @@
                             <a href="print.html" title="Print this book" aria-label="Print this book">
                                 <i id="print-button" class="fa fa-print"></i>
                             </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -268,7 +272,7 @@ By default, this variable is generated automatically in
 <a class="header" href="#debian_unpack_dir" id="debian_unpack_dir"><h4>DEBIAN_UNPACK_DIR</h4></a>
 <p>Path to source code directory after unpacked.
 This variable is initialized in <code>debian-package.bbclass</code>
-with default value <code>$.{WORKDIR}/${BP}</code></p>
+with default value <code>${WORKDIR}/${BP}</code></p>
 <a class="header" href="#debian_patch_type" id="debian_patch_type"><h4>DEBIAN_PATCH_TYPE</h4></a>
 <p>Decide action to apply patches for the source package.
 Normally, this variable will only need to be set if
@@ -289,6 +293,14 @@ In some cases, this variable need to be unset because
 <code>DEBIAN_PATCH_TYPE</code> is <code>quilt</code> but there is no patch.
 For example, package <code>gawk</code> has <code>debian/source/format</code> is <code>3.0 (quilt)</code>
 but there is no patch in <code>debian</code> subfolder.</p>
+<a class="header" href="#debian_use_snapshot" id="debian_use_snapshot"><h4>DEBIAN_USE_SNAPSHOT</h4></a>
+<p>Select snapshot.debian.org as the Debian source package download location, by default
+is <code>0</code>. If you want to download package from snapshot.debianorg, you need to set <code>1</code>.</p>
+<a class="header" href="#bpn" id="bpn"><h4>BPN</h4></a>
+<p>In <code>meta-debian</code>, <code>BPN</code> is not just &quot;<em>a version of the PN variable with
+common prefixes and suffixes removed</em>&quot; but the real Debian source package name
+and usually used to specify directory path.<br />
+For examples: <code>${WORKDIR}/${BPN}-${PV}</code>, <code>${libdir}/${BPN}</code>, <code>${datadir}/${BPN}</code>, ...</p>
 <a class="header" href="#development" id="development"><h1>Development</h1></a>
 <p>All recipes for Debian packages should be put in folder <code>recipes-debian</code>.
 The next section will show you how to create a recipe in <code>meta-debian</code>.</p>
@@ -623,6 +635,73 @@ $ sudo dd if=core-image-minimal-raspberrypi3.rpi-sdimg of=/dev/sdb
 <p>Boot the SD card on the board and login with <code>root</code> (no password).</p>
 </li>
 </ol>
+<a class="header" href="#appendix" id="appendix"><h1>Appendix</h1></a>
+<a class="header" href="#version-comparison" id="version-comparison"><h2>Version comparison</h2></a>
+<p>Below is the packages version comparison between Debian 10 and Poky.
+The comparison is done with Poky 2.6 (thud), 2.7 (warrior) and 2.8 (master).</p>
+<p><em>Note: Poky 2.8 has not released yet, so we use the current branch master instead.</em></p>
+<pre><code>meta-debian : 51c6c0a175b8e3a91bec803a0a792fed00029e6e
+poky 2.6    : 50f33d3bfebcbfb1538d932fb487cfd789872026
+poky 2.7    : 0e392026ffefee098a890c39bc3ca1f697bacb52
+poky 2.8    : c23c8ebc7f66a92110bfc9e3c4d633a432d1353b
+</code></pre>
+<p><em>Note: Packages with version NA mean they are not provided.</em></p>
+<table><thead><tr><th>            </th><th> Debian 10       </th><th> Poky 2.6        </th><th> Poky 2.7        </th><th> Poky 2.8        </th></tr></thead><tbody>
+<tr><td> autoconf   </td><td> 2.69            </td><td> 2.69            </td><td> 2.69            </td><td> 2.69            </td></tr>
+<tr><td> automake   </td><td> 1.16.1          </td><td> 1.16.1          </td><td> 1.16.1          </td><td> 1.16.1          </td></tr>
+<tr><td> bc         </td><td> 1.07.1          </td><td> 1.07.1          </td><td> 1.07.1          </td><td> 1.07.1          </td></tr>
+<tr><td> binutils   </td><td> 2.31.1          </td><td> 2.31.1          </td><td> <strong>2.32.0</strong>      </td><td> <strong>2.32.0</strong>      </td></tr>
+<tr><td> bison      </td><td> 3.3.2           </td><td> <strong>3.0.4</strong>       </td><td> <strong>3.0.4</strong>       </td><td> <strong>3.0.4</strong>       </td></tr>
+<tr><td> busybox    </td><td> 1.30.1          </td><td> <strong>1.29.3</strong>      </td><td> 1.30.1          </td><td> 1.30.1          </td></tr>
+<tr><td> bzip2      </td><td> 1.0.6           </td><td> 1.0.6           </td><td> 1.0.6           </td><td> 1.0.6           </td></tr>
+<tr><td> curl       </td><td> 7.64.0          </td><td> <strong>7.61.0</strong>      </td><td> 7.64.0          </td><td> <strong>7.64.1</strong>      </td></tr>
+<tr><td> db         </td><td> 5.3.28          </td><td> 5.3.28          </td><td> 5.3.28          </td><td> 5.3.28          </td></tr>
+<tr><td> dbus       </td><td> 1.12.12         </td><td> <strong>1.12.10</strong>     </td><td> 1.12.12         </td><td> 1.12.12         </td></tr>
+<tr><td> ed         </td><td> 1.15            </td><td> <strong>1.14.2</strong>      </td><td> 1.15            </td><td> 1.15            </td></tr>
+<tr><td> expat      </td><td> 2.2.6           </td><td> 2.2.6           </td><td> 2.2.6           </td><td> 2.2.6           </td></tr>
+<tr><td> flex       </td><td> 2.6.4           </td><td> <strong>2.6.0</strong>       </td><td> <strong>2.6.0</strong>       </td><td> <strong>2.6.0</strong>       </td></tr>
+<tr><td> gawk       </td><td> 4.2.1           </td><td> 4.2.1           </td><td> 4.2.1           </td><td> 4.2.1           </td></tr>
+<tr><td> gcc        </td><td> 8.3.0           </td><td> <strong>8.2.0</strong>       </td><td> 8.3.0           </td><td> 8.3.0           </td></tr>
+<tr><td> gdb        </td><td> 8.2.1           </td><td> <strong>8.2</strong>         </td><td> 8.2.1           </td><td> 8.2.1           </td></tr>
+<tr><td> gettext    </td><td> 0.19.8.1        </td><td> 0.19.8.1        </td><td> 0.19.8.1        </td><td> 0.19.8.1        </td></tr>
+<tr><td> git        </td><td> 2.20.1          </td><td> <strong>2.18.1</strong>      </td><td> 2.20.1          </td><td> 2.20.1          </td></tr>
+<tr><td> glib-2.0   </td><td> 2.58.3          </td><td> <strong>2.58.0</strong>      </td><td> 2.58.3          </td><td> 2.58.3          </td></tr>
+<tr><td> glibc      </td><td> 2.28            </td><td> 2.28            </td><td> <strong>2.29</strong>        </td><td> <strong>2.29</strong>        </td></tr>
+<tr><td> gmp        </td><td> 6.1.2           </td><td> 6.1.2           </td><td> 6.1.2           </td><td> 6.1.2           </td></tr>
+<tr><td> gnulib     </td><td> 20140202+stable </td><td> <strong>NA</strong>          </td><td> <strong>NA</strong>          </td><td> <strong>NA</strong>          </td></tr>
+<tr><td> gzip       </td><td> 1.9             </td><td> 1.9             </td><td> <strong>1.10</strong>        </td><td> <strong>1.10</strong>        </td></tr>
+<tr><td> kbd        </td><td> 2.0.4           </td><td> 2.0.4           </td><td> 2.0.4           </td><td> 2.0.4           </td></tr>
+<tr><td> libtool    </td><td> 2.4.6           </td><td> 2.4.6           </td><td> 2.4.6           </td><td> 2.4.6           </td></tr>
+<tr><td> libxml2    </td><td> 2.9.4           </td><td> <strong>2.9.8</strong>       </td><td> <strong>2.9.8</strong>       </td><td> <strong>2.9.8</strong>       </td></tr>
+<tr><td> m4         </td><td> 1.4.18          </td><td> 1.4.18          </td><td> 1.4.18          </td><td> 1.4.18          </td></tr>
+<tr><td> make       </td><td> 4.2.1           </td><td> 4.2.1           </td><td> 4.2.1           </td><td> 4.2.1           </td></tr>
+<tr><td> libmpc     </td><td> 1.1.0           </td><td> 1.1.0           </td><td> 1.1.0           </td><td> 1.1.0           </td></tr>
+<tr><td> mpfr       </td><td> 4.0.2           </td><td> <strong>4.0.1</strong>       </td><td> 4.0.2           </td><td> 4.0.2           </td></tr>
+<tr><td> ncurses    </td><td> 6.1+20181013    </td><td> <strong>6.1+20180630</strong></td><td> 6.1+20181013    </td><td> 6.1+20181013    </td></tr>
+<tr><td> openssl    </td><td> 1.1.1b          </td><td> <strong>1.1.1a</strong>      </td><td> 1.1.1b          </td><td> 1.1.1b          </td></tr>
+<tr><td> pax-utils  </td><td> 1.2.4           </td><td> <strong>NA</strong>          </td><td> <strong>NA</strong>          </td><td> <strong>NA</strong>          </td></tr>
+<tr><td> pciutils   </td><td> 3.5.2           </td><td> <strong>3.6.2</strong>       </td><td> <strong>3.6.2</strong>       </td><td> <strong>3.6.2</strong>       </td></tr>
+<tr><td> perl       </td><td> 5.28.1          </td><td> <strong>5.24.4</strong>      </td><td> 5.28.1          </td><td> 5.28.1          </td></tr>
+<tr><td> pkgconfig  </td><td> 0.29            </td><td> <strong>0.29.2</strong>      </td><td> <strong>0.29.2</strong>      </td><td> <strong>0.29.2</strong>      </td></tr>
+<tr><td> popt       </td><td> 1.16            </td><td> 1.16            </td><td> 1.16            </td><td> 1.16            </td></tr>
+<tr><td> procps     </td><td> 3.3.15          </td><td> 3.3.15          </td><td> 3.3.15          </td><td> 3.3.15          </td></tr>
+<tr><td> quilt      </td><td> 0.65            </td><td> 0.65            </td><td> 0.65            </td><td> 0.65            </td></tr>
+<tr><td> rdma-core  </td><td> 22.1            </td><td> <strong>NA</strong>          </td><td> <strong>NA</strong>          </td><td> <strong>NA</strong>          </td></tr>
+<tr><td> readline   </td><td> 7.0             </td><td> 7.0             </td><td> <strong>8.0</strong>         </td><td> <strong>8.0</strong>         </td></tr>
+<tr><td> sysfsutils </td><td> 2.1.0           </td><td> 2.1.0           </td><td> 2.1.0           </td><td> 2.1.0           </td></tr>
+<tr><td> tar        </td><td> 1.30            </td><td> 1.30            </td><td> <strong>1.31</strong>        </td><td> <strong>1.32</strong>        </td></tr>
+<tr><td> u-boot     </td><td> 2019.01         </td><td> <strong>2018.07</strong>     </td><td> 2019.01         </td><td> <strong>2019.04</strong>     </td></tr>
+<tr><td> unifdef    </td><td> 2.10            </td><td> <strong>2.11</strong>        </td><td> <strong>2.11</strong>        </td><td> <strong>2.11</strong>        </td></tr>
+<tr><td> zlib       </td><td> 1.2.11          </td><td> 1.2.11          </td><td> 1.2.11          </td><td> 1.2.11          </td></tr>
+</tbody></table>
+<table><thead><tr><th>                                                    </th><th> Poky 2.6 </th><th> Poky 2.7 </th><th> Poky 2.8 </th></tr></thead><tbody>
+<tr><td> Number of packages with same version               </td><td> 24       </td><td> 32       </td><td> 30       </td></tr>
+<tr><td> Number of packages with lower version than Debian  </td><td> 15       </td><td> 2        </td><td> 2        </td></tr>
+<tr><td> Number of packages with higher version than Debian </td><td> 4        </td><td> 9        </td><td> 11       </td></tr>
+<tr><td> Number of packages are not provided in Poky        </td><td> 3        </td><td> 3        </td><td> 3        </td></tr>
+</tbody></table>
+<p>Poky 2.8 is planned to be released in Oct 2019, so the number of packages
+with different version may continue increase in future.</p>
 <a class="header" href="#community-resources" id="community-resources"><h1>Community Resources</h1></a>
 <a class="header" href="#project-home" id="project-home"><h4>Project home</h4></a>
 <ul>

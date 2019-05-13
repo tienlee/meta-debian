@@ -32,7 +32,10 @@
     </head>
     <body class="light">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">var path_to_root = "";</script>
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script type="text/javascript">
@@ -54,7 +57,7 @@
         <script type="text/javascript">
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
-            if (theme === null || theme === undefined) { theme = 'light'; }
+            if (theme === null || theme === undefined) { theme = default_theme; }
             document.body.className = theme;
             document.querySelector('html').className = theme + ' js';
         </script>
@@ -72,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html" class="active"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
+            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html" class="active"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="5.appendix.html"><strong aria-hidden="true">5.</strong> Appendix</a></li><li class="affix"><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -89,7 +92,7 @@
                                 <i class="fa fa-paint-brush"></i>
                             </button>
                             <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                                 <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -108,6 +111,7 @@
                             <a href="print.html" title="Print this book" aria-label="Print this book">
                                 <i id="print-button" class="fa fa-print"></i>
                             </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -180,7 +184,7 @@ By default, this variable is generated automatically in
 <a class="header" href="#debian_unpack_dir" id="debian_unpack_dir"><h4>DEBIAN_UNPACK_DIR</h4></a>
 <p>Path to source code directory after unpacked.
 This variable is initialized in <code>debian-package.bbclass</code>
-with default value <code>$.{WORKDIR}/${BP}</code></p>
+with default value <code>${WORKDIR}/${BP}</code></p>
 <a class="header" href="#debian_patch_type" id="debian_patch_type"><h4>DEBIAN_PATCH_TYPE</h4></a>
 <p>Decide action to apply patches for the source package.
 Normally, this variable will only need to be set if
@@ -201,6 +205,14 @@ In some cases, this variable need to be unset because
 <code>DEBIAN_PATCH_TYPE</code> is <code>quilt</code> but there is no patch.
 For example, package <code>gawk</code> has <code>debian/source/format</code> is <code>3.0 (quilt)</code>
 but there is no patch in <code>debian</code> subfolder.</p>
+<a class="header" href="#debian_use_snapshot" id="debian_use_snapshot"><h4>DEBIAN_USE_SNAPSHOT</h4></a>
+<p>Select snapshot.debian.org as the Debian source package download location, by default
+is <code>0</code>. If you want to download package from snapshot.debianorg, you need to set <code>1</code>.</p>
+<a class="header" href="#bpn" id="bpn"><h4>BPN</h4></a>
+<p>In <code>meta-debian</code>, <code>BPN</code> is not just &quot;<em>a version of the PN variable with
+common prefixes and suffixes removed</em>&quot; but the real Debian source package name
+and usually used to specify directory path.<br />
+For examples: <code>${WORKDIR}/${BPN}-${PV}</code>, <code>${libdir}/${BPN}</code>, <code>${datadir}/${BPN}</code>, ...</p>
 
                     </main>
 
