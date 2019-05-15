@@ -143,9 +143,9 @@
                         <a class="header" href="#beaglebone-black" id="beaglebone-black"><h1>BeagleBone Black</h1></a>
 <p>Get meta-ti at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/">https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky        : master:753e2a0ede4449917c75353b57f13bbafe70fac8
-meta-ti     : master:65a9fad567115d4335c90d83777fc1564008fe5f
-meta-debian : master:afcdd686ac74bf0fec81c579ed77019e34a3cb62
+<pre><code>poky        : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
+meta-ti     : master:3b40d8db80c793c499848e9a3b224e7661bfcceb
+meta-debian : warrior:a2f64c16d7233570dc803e195e1cf2c6bd07e290
 </code></pre>
 <a class="header" href="#build" id="build"><h2>Build</h2></a>
 <ol>
@@ -161,6 +161,7 @@ $ source ./poky/oe-init-build-env build-bbb
 ...
 BBLAYERS ?= &quot; \
   /path/to/poky/meta \
+  /path/to/poky/meta-poky \
   /path/to/poky/meta-ti \
   /path/to/poky/meta-debian \
   &quot;
@@ -183,14 +184,16 @@ KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
 </code></pre>
 </li>
 <li>
-<p>Build.</p>
+<p>Build.
+By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
 </code></pre>
+<p>In <code>conf/local.conf</code>, <code>DISTRO</code> can be changed to 'deby' for building <code>core-image-base</code>.</p>
 </li>
 </ol>
-<p>After finish building, these files in <code>tmp/deploy/images/beaglebone/</code> should be available:</p>
+<p>After finish building, in <code>tmp/deploy/images/beaglebone/</code>, these files should be available:</p>
 <ul>
-<li>core-image-minimal-beaglebone.tar.xz</li>
+<li>core-image-minimal-beaglebone.cpio.gz</li>
 <li>MLO</li>
 <li>u-boot.img</li>
 </ul>
@@ -201,13 +204,14 @@ KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
 </li>
 <li>
 <p>Install the root file system.</p>
-<pre><code class="language-sh">sudo tar xf core-image-minimal-bbb.tar.xz -C /mount/dir/of/ROOT
+<pre><code class="language-sh">$ cd /mount/dir/of/ROOT
+$ zcat /path/to/core-image-minimal-beaglebone.cpio.gz | sudo cpio -idm --no-absolute-filenames
 </code></pre>
 </li>
 <li>
-<p>Install the bootloader. If ROOT is 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
-<pre><code class="language-sh">$ cp MLO u-boot.img /mount/dir/of/BOOT
-$ vi /mount/dir/of/BOOT/uEnv.txt
+<p>Install the bootloader. If ROOT is the 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
+<pre><code class="language-sh">$ sudo cp MLO u-boot.img /mount/dir/of/BOOT
+$ sudo vi /mount/dir/of/BOOT/uEnv.txt
 bootpart=0:2
 bootdir=/boot
 bootfile=zImage

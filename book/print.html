@@ -439,9 +439,9 @@ those layers to build image for BeagleBone Black and Raspberry Pi.</p>
 <a class="header" href="#beaglebone-black" id="beaglebone-black"><h1>BeagleBone Black</h1></a>
 <p>Get meta-ti at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/">https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky        : master:753e2a0ede4449917c75353b57f13bbafe70fac8
-meta-ti     : master:65a9fad567115d4335c90d83777fc1564008fe5f
-meta-debian : master:afcdd686ac74bf0fec81c579ed77019e34a3cb62
+<pre><code>poky        : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
+meta-ti     : master:3b40d8db80c793c499848e9a3b224e7661bfcceb
+meta-debian : warrior:a2f64c16d7233570dc803e195e1cf2c6bd07e290
 </code></pre>
 <a class="header" href="#build-1" id="build-1"><h2>Build</h2></a>
 <ol>
@@ -457,6 +457,7 @@ $ source ./poky/oe-init-build-env build-bbb
 ...
 BBLAYERS ?= &quot; \
   /path/to/poky/meta \
+  /path/to/poky/meta-poky \
   /path/to/poky/meta-ti \
   /path/to/poky/meta-debian \
   &quot;
@@ -479,14 +480,16 @@ KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
 </code></pre>
 </li>
 <li>
-<p>Build.</p>
+<p>Build.
+By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
 </code></pre>
+<p>In <code>conf/local.conf</code>, <code>DISTRO</code> can be changed to 'deby' for building <code>core-image-base</code>.</p>
 </li>
 </ol>
-<p>After finish building, these files in <code>tmp/deploy/images/beaglebone/</code> should be available:</p>
+<p>After finish building, in <code>tmp/deploy/images/beaglebone/</code>, these files should be available:</p>
 <ul>
-<li>core-image-minimal-beaglebone.tar.xz</li>
+<li>core-image-minimal-beaglebone.cpio.gz</li>
 <li>MLO</li>
 <li>u-boot.img</li>
 </ul>
@@ -497,13 +500,14 @@ KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
 </li>
 <li>
 <p>Install the root file system.</p>
-<pre><code class="language-sh">sudo tar xf core-image-minimal-bbb.tar.xz -C /mount/dir/of/ROOT
+<pre><code class="language-sh">$ cd /mount/dir/of/ROOT
+$ zcat /path/to/core-image-minimal-beaglebone.cpio.gz | sudo cpio -idm --no-absolute-filenames
 </code></pre>
 </li>
 <li>
-<p>Install the bootloader. If ROOT is 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
-<pre><code class="language-sh">$ cp MLO u-boot.img /mount/dir/of/BOOT
-$ vi /mount/dir/of/BOOT/uEnv.txt
+<p>Install the bootloader. If ROOT is the 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
+<pre><code class="language-sh">$ sudo cp MLO u-boot.img /mount/dir/of/BOOT
+$ sudo vi /mount/dir/of/BOOT/uEnv.txt
 bootpart=0:2
 bootdir=/boot
 bootfile=zImage
@@ -561,9 +565,9 @@ beaglebone login:
 <a class="header" href="#raspberry-pi" id="raspberry-pi"><h1>Raspberry Pi</h1></a>
 <p>Get meta-raspberrypi at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi">https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky             : master:753e2a0ede4449917c75353b57f13bbafe70fac8
-meta-raspberrypi : master:1b990fb8e2c21fdfac97c72d471e658087ce7026
-meta-debian      : master:afcdd686ac74bf0fec81c579ed77019e34a3cb62
+<pre><code>poky             : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
+meta-raspberrypi : master:7059c374512f1c1c0df9ecab0703d11438bdf78b
+meta-debian      : warrior:a2f64c16d7233570dc803e195e1cf2c6bd07e290
 </code></pre>
 <a class="header" href="#build-2" id="build-2"><h2>Build</h2></a>
 <ol>
@@ -579,6 +583,7 @@ $ source ./poky/oe-init-build-env build-pi
 ...
 BBLAYERS ?= &quot; \
   /path/to/poky/meta \
+  /path/to/poky/meta-poky \
   /path/to/poky/meta-raspberrypi \
   /path/to/poky/meta-debian \
   &quot;
@@ -610,16 +615,25 @@ LINUX_DEFCONFIG_raspberrypi3-64 ?= &quot;bcmrpi3_defconfig&quot;
 </code></pre>
 </li>
 <li>
-<p>If the board is connected with a monitor, and we want login prompt on <code>tty1</code>:</p>
+<p>Configuration for <code>deby-tiny</code>
+meta-debian provides 2 <code>DISTRO</code>, 'deby-tiny' (default) and 'deby'.
+The below configurations is only for 'deby-tiny'.</p>
 <pre><code class="language-sh">$ vi conf/local.conf
 ...
+# If the board is connected with a monitor, and we want login prompt on tty1.
+# NOTE: Don't add this config when build with DISTRO 'deby' or it will duplicate.
 SERIAL_CONSOLES_append = &quot; 115200;tty1&quot;
+
+# Provide image output for easier to install
+IMAGE_FSTYPES_append = &quot; rpi-sdimg&quot;
 </code></pre>
 </li>
 <li>
-<p>Build:</p>
+<p>Build:
+By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
 </code></pre>
+<p>In <code>conf/local.conf</code>, <code>DISTRO</code> can be changed to 'deby' for building <code>core-image-base</code>.</p>
 </li>
 </ol>
 <p>After finish building, <code>tmp/deploy/images/raspberrypi3/core-image-minimal-raspberrypi3.rpi-sdimg</code> should be available.</p>
