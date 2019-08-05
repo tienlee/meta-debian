@@ -143,71 +143,30 @@
                         <a class="header" href="#raspberry-pi" id="raspberry-pi"><h1>Raspberry Pi</h1></a>
 <p>Get meta-raspberrypi at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi">https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky             : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
-meta-raspberrypi : master:7059c374512f1c1c0df9ecab0703d11438bdf78b
-meta-debian      : warrior:bd72b661fe530af12503300ba5e0bdb45fc41408
+<pre><code>poky             : warrior:b164f0dc3e69ba9cb552b48834cd6c50f50c5000
+meta-raspberrypi : warrior:1c842e21c22e999b8a317e33d7748102ef13b6b4
+meta-debian      : warrior:7df267bd32b8229e1a67ab537c30e3f3eaeaa3d8
 </code></pre>
 <a class="header" href="#build" id="build"><h2>Build</h2></a>
 <ol>
 <li>
 <p>Setup build directory.</p>
-<pre><code class="language-sh">$ export TEMPLATECONF=meta-debian/conf
+<pre><code class="language-sh">$ export TEMPLATECONF=meta-debian/bsp/meta-raspberrypi/conf
 $ source ./poky/oe-init-build-env build-pi
 </code></pre>
 </li>
 <li>
-<p>Add layer <code>meta-raspberrypi</code> to <code>conf/bblayers.conf</code>.</p>
-<pre><code class="language-sh">$ vi conf/bblayers.conf
-...
-BBLAYERS ?= &quot; \
-  /path/to/poky/meta \
-  /path/to/poky/meta-poky \
-  /path/to/poky/meta-raspberrypi \
-  /path/to/poky/meta-debian \
-  &quot;
-</code></pre>
-</li>
-<li>
-<p>We do the test with Raspberry Pi 3, so set <code>MACHINE</code> to <code>raspberrypi3</code>.</p>
+<p>Set <code>MACHINE</code> to <code>raspberrypi3</code>, which is the current tested version.</p>
 <pre><code class="language-sh">$ vi conf/local.conf
 ...
 MACHINE ??= &quot;raspberrypi3&quot;
 ...
 </code></pre>
+<p><em>Note: Add <code>ENABLE_UART = &quot;1&quot;</code> to <code>conf/local.conf</code> if you want serial console support.
+There are also other <a href="https://meta-raspberrypi.readthedocs.io/en/latest/extra-build-config.html">build configurations</a>.</em></p>
 </li>
 <li>
-<p>Use raspberrypi kernel.</p>
-<pre><code class="language-sh">$ vi conf/local.conf
-...
-LINUX_GIT_URI = &quot;git://github.com/raspberrypi&quot;
-LINUX_GIT_PROTOCOL = &quot;https&quot;
-LINUX_GIT_PREFIX = &quot;&quot;
-LINUX_GIT_REPO = &quot;linux.git&quot;
-LINUX_GIT_BRANCH = &quot;rpi-4.19.y&quot;
-
-LINUX_DEFCONFIG_raspberrypi0-wifi ?= &quot;bcmrpi_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi ?= &quot;bcmrpi_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi2 ?= &quot;bcm2709_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi3 ?= &quot;bcm2709_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi3-64 ?= &quot;bcmrpi3_defconfig&quot;
-</code></pre>
-</li>
-<li>
-<p>Configuration for <code>deby-tiny</code>
-meta-debian provides 2 <code>DISTRO</code>, 'deby-tiny' (default) and 'deby'.
-The below configurations is only for 'deby-tiny'.</p>
-<pre><code class="language-sh">$ vi conf/local.conf
-...
-# If the board is connected with a monitor, and we want login prompt on tty1.
-# NOTE: Don't add this config when build with DISTRO 'deby' or it will duplicate.
-SERIAL_CONSOLES_append = &quot; 115200;tty1&quot;
-
-# Provide image output for easier to install
-IMAGE_FSTYPES_append = &quot; rpi-sdimg&quot;
-</code></pre>
-</li>
-<li>
-<p>Build:
+<p>Build.
 By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
 </code></pre>
@@ -222,6 +181,15 @@ By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-
 <pre><code class="language-sh"># Assume /dev/sdb is target SD card
 $ sudo dd if=core-image-minimal-raspberrypi3.rpi-sdimg of=/dev/sdb
 </code></pre>
+</li>
+<li>
+<p>Enable UART <em>(Optional)</em>.<br />
+If you didn't add <code>ENABLE_UART = &quot;1&quot;</code> when build image
+and want to use serial console, you can enable it by edit config files in boot partition.</p>
+<ul>
+<li>In file cmdline.txt, add <code>console=serial0,115200</code> in the same line with old content.</li>
+<li>In file config.txt, add <code>enable_uart=1</code> in a new line.</li>
+</ul>
 </li>
 <li>
 <p>Boot the SD card on the board and login with <code>root</code> (no password).</p>

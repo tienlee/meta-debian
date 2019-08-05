@@ -308,8 +308,12 @@ The next section will show you how to create a recipe in <code>meta-debian</code
 <p>Firstly, create an empty file which will store source code information:</p>
 <pre><code class="language-sh">touch recipes-debian/sources/&lt;source_name&gt;.inc
 </code></pre>
+<p>Enable <code>debian-source</code> in <code>&lt;buildir&gt;/conf/local.conf</code>:</p>
+<pre><code class="language-sh">DEBIAN_SOURCE_ENABLED = &quot;1&quot;
+DEBIAN_SRC_FORCE_REGEN = &quot;1&quot;
+</code></pre>
 <p>When bitbake run, class <code>debian-source</code> will generate information
-about version, source URI and checksum to this file.</p>
+about version, source URI and checksum to <code>.inc</code> file.</p>
 <p><em>NOTE: By default, <code>debian-source</code> will not rerun if
 file <code>Sources.xz</code> does not change. Force it regenerate by adding
 <code>DEBIAN_SRC_FORCE_REGEN = &quot;1&quot;</code> into <code>conf/local.conf</code> in the build directory.</em></p>
@@ -367,6 +371,9 @@ split packages same as Poky recipe to avoid conflict.</li>
 <li>
 <p>Generate source code information</p>
 <pre><code class="language-sh">touch meta-debian/recipes-debian/sources/icu.inc
+
+# Enable debian-source
+echo 'DEBIAN_SOURCE_ENABLED = &quot;1&quot;' &gt;&gt; &lt;build-dir&gt;/conf/local.conf
 
 # Force debian-source re-generate in case Sources.xz doesn't change
 # Ignore this step if you already set DEBIAN_SRC_FORCE_REGEN to &quot;1&quot;
@@ -439,9 +446,9 @@ those layers to build image for BeagleBone Black and Raspberry Pi.</p>
 <a class="header" href="#beaglebone-black" id="beaglebone-black"><h1>BeagleBone Black</h1></a>
 <p>Get meta-ti at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/">https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky        : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
-meta-ti     : master:3b40d8db80c793c499848e9a3b224e7661bfcceb
-meta-debian : warrior:a2f64c16d7233570dc803e195e1cf2c6bd07e290
+<pre><code>poky        : warrior:f2b442c5c8e3925a4d3fc9693f1e47863dade2a9
+meta-ti     : master:59e66caff2568ab32f59596f1aeab8ea27649941
+meta-debian : warrior:e87428eec5edfa6ec741eed8827d7044df043625
 </code></pre>
 <a class="header" href="#build-1" id="build-1"><h2>Build</h2></a>
 <ol>
@@ -452,7 +459,7 @@ $ source ./poky/oe-init-build-env build-bbb
 </code></pre>
 </li>
 <li>
-<p>Add <code>meta-ti</code> to <code>conf/bblayers.conf</code>.</p>
+<p>Add <code>meta-ti</code> and <code>meta-debian/bsp/meta-ti</code> to <code>conf/bblayers.conf</code>.</p>
 <pre><code class="language-sh">$ vi conf/bblayers.conf
 ...
 BBLAYERS ?= &quot; \
@@ -460,6 +467,7 @@ BBLAYERS ?= &quot; \
   /path/to/poky/meta-poky \
   /path/to/poky/meta-ti \
   /path/to/poky/meta-debian \
+  /path/to/poky/meta-debian/bsp/meta-ti \
   &quot;
 </code></pre>
 </li>
@@ -472,14 +480,6 @@ MACHINE ??= &quot;beaglebone&quot;
 </code></pre>
 </li>
 <li>
-<p>Set default config for linux-base.</p>
-<pre><code class="language-sh">$ vi conf/local.conf
-...
-LINUX_DEFCONFIG = &quot;omap2plus_defconfig&quot;
-KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
-</code></pre>
-</li>
-<li>
 <p>Build.
 By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
@@ -489,9 +489,11 @@ By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-
 </ol>
 <p>After finish building, in <code>tmp/deploy/images/beaglebone/</code>, these files should be available:</p>
 <ul>
-<li>core-image-minimal-beaglebone.cpio.gz</li>
-<li>MLO</li>
-<li>u-boot.img</li>
+<li><code>MLO</code></li>
+<li><code>u-boot.img</code> (U-Boot)</li>
+<li><code>zImage</code> (Kernel)</li>
+<li><code>am335x-boneblack.dtb</code> (Kernel device tree)</li>
+<li><code>core-image-minimal-beaglebone.cpio.gz</code> (rootfs)</li>
 </ul>
 <a class="header" href="#boot" id="boot"><h2>Boot</h2></a>
 <ol>
@@ -505,11 +507,15 @@ $ zcat /path/to/core-image-minimal-beaglebone.cpio.gz | sudo cpio -idm --no-abso
 </code></pre>
 </li>
 <li>
+<p>Install kernel</p>
+<p>$ sudo cp zImage am335x-boneblack.dtb /mount/dir/of/BOOT</p>
+</li>
+<li>
 <p>Install the bootloader. If ROOT is the 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
 <pre><code class="language-sh">$ sudo cp MLO u-boot.img /mount/dir/of/BOOT
-$ sudo vi /mount/dir/of/BOOT/uEnv.txt
-bootpart=0:2
-bootdir=/boot
+$ sudo cat &lt;&lt;\EOF &gt; /mount/dir/of/BOOT/uEnv.txt
+bootpart=0:1
+bootdir=/
 bootfile=zImage
 console=ttyO0,115200n8
 fdtaddr=0x81000000
@@ -521,6 +527,7 @@ mmcargs=setenv bootargs console=${console} root=${mmcroot} rootfstype=${mmcrootf
 loadfdt=load mmc ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}
 loadimage=load mmc ${bootpart} ${loadaddr} ${bootdir}/${bootfile}
 uenvcmd=if run loadfdt; then echo Loaded ${fdtfile}; if run loadimage; then run mmcargs; bootz ${loadaddr} - ${fdtaddr}; fi; fi;
+EOF
 </code></pre>
 </li>
 <li>
@@ -565,71 +572,30 @@ beaglebone login:
 <a class="header" href="#raspberry-pi" id="raspberry-pi"><h1>Raspberry Pi</h1></a>
 <p>Get meta-raspberrypi at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi">https://git.yoctoproject.org/cgit/cgit.cgi/meta-raspberrypi</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky             : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
-meta-raspberrypi : master:7059c374512f1c1c0df9ecab0703d11438bdf78b
-meta-debian      : warrior:bd72b661fe530af12503300ba5e0bdb45fc41408
+<pre><code>poky             : warrior:b164f0dc3e69ba9cb552b48834cd6c50f50c5000
+meta-raspberrypi : warrior:1c842e21c22e999b8a317e33d7748102ef13b6b4
+meta-debian      : warrior:7df267bd32b8229e1a67ab537c30e3f3eaeaa3d8
 </code></pre>
 <a class="header" href="#build-2" id="build-2"><h2>Build</h2></a>
 <ol>
 <li>
 <p>Setup build directory.</p>
-<pre><code class="language-sh">$ export TEMPLATECONF=meta-debian/conf
+<pre><code class="language-sh">$ export TEMPLATECONF=meta-debian/bsp/meta-raspberrypi/conf
 $ source ./poky/oe-init-build-env build-pi
 </code></pre>
 </li>
 <li>
-<p>Add layer <code>meta-raspberrypi</code> to <code>conf/bblayers.conf</code>.</p>
-<pre><code class="language-sh">$ vi conf/bblayers.conf
-...
-BBLAYERS ?= &quot; \
-  /path/to/poky/meta \
-  /path/to/poky/meta-poky \
-  /path/to/poky/meta-raspberrypi \
-  /path/to/poky/meta-debian \
-  &quot;
-</code></pre>
-</li>
-<li>
-<p>We do the test with Raspberry Pi 3, so set <code>MACHINE</code> to <code>raspberrypi3</code>.</p>
+<p>Set <code>MACHINE</code> to <code>raspberrypi3</code>, which is the current tested version.</p>
 <pre><code class="language-sh">$ vi conf/local.conf
 ...
 MACHINE ??= &quot;raspberrypi3&quot;
 ...
 </code></pre>
+<p><em>Note: Add <code>ENABLE_UART = &quot;1&quot;</code> to <code>conf/local.conf</code> if you want serial console support.
+There are also other <a href="https://meta-raspberrypi.readthedocs.io/en/latest/extra-build-config.html">build configurations</a>.</em></p>
 </li>
 <li>
-<p>Use raspberrypi kernel.</p>
-<pre><code class="language-sh">$ vi conf/local.conf
-...
-LINUX_GIT_URI = &quot;git://github.com/raspberrypi&quot;
-LINUX_GIT_PROTOCOL = &quot;https&quot;
-LINUX_GIT_PREFIX = &quot;&quot;
-LINUX_GIT_REPO = &quot;linux.git&quot;
-LINUX_GIT_BRANCH = &quot;rpi-4.19.y&quot;
-
-LINUX_DEFCONFIG_raspberrypi0-wifi ?= &quot;bcmrpi_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi ?= &quot;bcmrpi_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi2 ?= &quot;bcm2709_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi3 ?= &quot;bcm2709_defconfig&quot;
-LINUX_DEFCONFIG_raspberrypi3-64 ?= &quot;bcmrpi3_defconfig&quot;
-</code></pre>
-</li>
-<li>
-<p>Configuration for <code>deby-tiny</code>
-meta-debian provides 2 <code>DISTRO</code>, 'deby-tiny' (default) and 'deby'.
-The below configurations is only for 'deby-tiny'.</p>
-<pre><code class="language-sh">$ vi conf/local.conf
-...
-# If the board is connected with a monitor, and we want login prompt on tty1.
-# NOTE: Don't add this config when build with DISTRO 'deby' or it will duplicate.
-SERIAL_CONSOLES_append = &quot; 115200;tty1&quot;
-
-# Provide image output for easier to install
-IMAGE_FSTYPES_append = &quot; rpi-sdimg&quot;
-</code></pre>
-</li>
-<li>
-<p>Build:
+<p>Build.
 By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
 </code></pre>
@@ -644,6 +610,15 @@ By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-
 <pre><code class="language-sh"># Assume /dev/sdb is target SD card
 $ sudo dd if=core-image-minimal-raspberrypi3.rpi-sdimg of=/dev/sdb
 </code></pre>
+</li>
+<li>
+<p>Enable UART <em>(Optional)</em>.<br />
+If you didn't add <code>ENABLE_UART = &quot;1&quot;</code> when build image
+and want to use serial console, you can enable it by edit config files in boot partition.</p>
+<ul>
+<li>In file cmdline.txt, add <code>console=serial0,115200</code> in the same line with old content.</li>
+<li>In file config.txt, add <code>enable_uart=1</code> in a new line.</li>
+</ul>
 </li>
 <li>
 <p>Boot the SD card on the board and login with <code>root</code> (no password).</p>

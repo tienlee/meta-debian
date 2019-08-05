@@ -143,9 +143,9 @@
                         <a class="header" href="#beaglebone-black" id="beaglebone-black"><h1>BeagleBone Black</h1></a>
 <p>Get meta-ti at <a href="https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/">https://git.yoctoproject.org/cgit/cgit.cgi/meta-ti/</a>.</p>
 <p>Tested with:</p>
-<pre><code>poky        : warrior:2e01bc44f914587a2a59c2208ca0322dfb41d2c6
-meta-ti     : master:3b40d8db80c793c499848e9a3b224e7661bfcceb
-meta-debian : warrior:a2f64c16d7233570dc803e195e1cf2c6bd07e290
+<pre><code>poky        : warrior:f2b442c5c8e3925a4d3fc9693f1e47863dade2a9
+meta-ti     : master:59e66caff2568ab32f59596f1aeab8ea27649941
+meta-debian : warrior:e87428eec5edfa6ec741eed8827d7044df043625
 </code></pre>
 <a class="header" href="#build" id="build"><h2>Build</h2></a>
 <ol>
@@ -156,7 +156,7 @@ $ source ./poky/oe-init-build-env build-bbb
 </code></pre>
 </li>
 <li>
-<p>Add <code>meta-ti</code> to <code>conf/bblayers.conf</code>.</p>
+<p>Add <code>meta-ti</code> and <code>meta-debian/bsp/meta-ti</code> to <code>conf/bblayers.conf</code>.</p>
 <pre><code class="language-sh">$ vi conf/bblayers.conf
 ...
 BBLAYERS ?= &quot; \
@@ -164,6 +164,7 @@ BBLAYERS ?= &quot; \
   /path/to/poky/meta-poky \
   /path/to/poky/meta-ti \
   /path/to/poky/meta-debian \
+  /path/to/poky/meta-debian/bsp/meta-ti \
   &quot;
 </code></pre>
 </li>
@@ -176,14 +177,6 @@ MACHINE ??= &quot;beaglebone&quot;
 </code></pre>
 </li>
 <li>
-<p>Set default config for linux-base.</p>
-<pre><code class="language-sh">$ vi conf/local.conf
-...
-LINUX_DEFCONFIG = &quot;omap2plus_defconfig&quot;
-KERNEL_EXTRA_ARGS += &quot;LOADADDR=${UBOOT_ENTRYPOINT}&quot;
-</code></pre>
-</li>
-<li>
 <p>Build.
 By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-minimal</code> is available to build</p>
 <pre><code class="language-sh">$ bitbake core-image-minimal
@@ -193,9 +186,11 @@ By default, <code>DISTRO</code> is set to 'deby-tiny', so only <code>core-image-
 </ol>
 <p>After finish building, in <code>tmp/deploy/images/beaglebone/</code>, these files should be available:</p>
 <ul>
-<li>core-image-minimal-beaglebone.cpio.gz</li>
-<li>MLO</li>
-<li>u-boot.img</li>
+<li><code>MLO</code></li>
+<li><code>u-boot.img</code> (U-Boot)</li>
+<li><code>zImage</code> (Kernel)</li>
+<li><code>am335x-boneblack.dtb</code> (Kernel device tree)</li>
+<li><code>core-image-minimal-beaglebone.cpio.gz</code> (rootfs)</li>
 </ul>
 <a class="header" href="#boot" id="boot"><h2>Boot</h2></a>
 <ol>
@@ -209,11 +204,15 @@ $ zcat /path/to/core-image-minimal-beaglebone.cpio.gz | sudo cpio -idm --no-abso
 </code></pre>
 </li>
 <li>
+<p>Install kernel</p>
+<p>$ sudo cp zImage am335x-boneblack.dtb /mount/dir/of/BOOT</p>
+</li>
+<li>
 <p>Install the bootloader. If ROOT is the 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
 <pre><code class="language-sh">$ sudo cp MLO u-boot.img /mount/dir/of/BOOT
-$ sudo vi /mount/dir/of/BOOT/uEnv.txt
-bootpart=0:2
-bootdir=/boot
+$ sudo cat &lt;&lt;\EOF &gt; /mount/dir/of/BOOT/uEnv.txt
+bootpart=0:1
+bootdir=/
 bootfile=zImage
 console=ttyO0,115200n8
 fdtaddr=0x81000000
@@ -225,6 +224,7 @@ mmcargs=setenv bootargs console=${console} root=${mmcroot} rootfstype=${mmcrootf
 loadfdt=load mmc ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}
 loadimage=load mmc ${bootpart} ${loadaddr} ${bootdir}/${bootfile}
 uenvcmd=if run loadfdt; then echo Loaded ${fdtfile}; if run loadimage; then run mmcargs; bootz ${loadaddr} - ${fdtaddr}; fi; fi;
+EOF
 </code></pre>
 </li>
 <li>
