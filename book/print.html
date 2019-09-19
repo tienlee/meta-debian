@@ -507,15 +507,11 @@ $ zcat /path/to/core-image-minimal-beaglebone.cpio.gz | sudo cpio -idm --no-abso
 </code></pre>
 </li>
 <li>
-<p>Install kernel</p>
-<p>$ sudo cp zImage am335x-boneblack.dtb /mount/dir/of/BOOT</p>
-</li>
-<li>
 <p>Install the bootloader. If ROOT is the 2nd partition, <code>mmcroot</code> should be <code>/dev/mmcblk0p2</code>.</p>
 <pre><code class="language-sh">$ sudo cp MLO u-boot.img /mount/dir/of/BOOT
 $ sudo cat &lt;&lt;\EOF &gt; /mount/dir/of/BOOT/uEnv.txt
-bootpart=0:1
-bootdir=/
+bootpart=0:2
+bootdir=/boot
 bootfile=zImage
 console=ttyO0,115200n8
 fdtaddr=0x81000000
@@ -527,6 +523,7 @@ mmcargs=setenv bootargs console=${console} root=${mmcroot} rootfstype=${mmcrootf
 loadfdt=load mmc ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}
 loadimage=load mmc ${bootpart} ${loadaddr} ${bootdir}/${bootfile}
 uenvcmd=if run loadfdt; then echo Loaded ${fdtfile}; if run loadimage; then run mmcargs; bootz ${loadaddr} - ${fdtaddr}; fi; fi;
+
 EOF
 </code></pre>
 </li>
