@@ -1,0 +1,13 @@
+diff --git a/bindings/python/Makefile.am b/bindings/python/Makefile.am
+index 40d14f4..f3fe773 100644
+--- a/bindings/python/Makefile.am
++++ b/bindings/python/Makefile.am
+@@ -14,7 +14,7 @@ if HAVE_PYTHON3
+ endif
+ install-exec-hook:
+ if HAVE_PYTHON2
+-	$(PYTHON2) setup.py install `test -n "$(DESTDIR)" && echo --root $(DESTDIR)`
++	$(PYTHON2) setup.py install `test -n "$(DESTDIR)" && echo --root $(DESTDIR)` --install-lib="##PYTHON_SITEPACKAGES_DIR##"
+ endif
+ if HAVE_PYTHON3
+ 	$(foreach pyver, $(PYTHON3_VERS), $(pyver) setup.py install `test -n "$(DESTDIR)" && echo --root $(DESTDIR)`;)
