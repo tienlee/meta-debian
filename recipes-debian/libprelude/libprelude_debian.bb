@@ -2,7 +2,7 @@ LICENSE = "GPLv2+ & LGPL-2.1+ & MIT & GPLv3+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 		    file://libmissing/sleep.c;beginline=2;endline=16;md5=1cbcbcc6446388bec2983f9ea1edc055 \
 		    file://install-sh;beginline=6;endline=27;md5=eb067d0ae3938e8e21c21d62c608fdfd \
-		    file://config.sub;beginline=7;endline=25;md5=e443b5b496d01ee52219d5269560d697 \
+		    file://m4/ax_check_aligned_access_required.m4;beginline=24;endline=50;md5=d734876954fbde01b1d67688e2ec478f \
 		    "
 
 inherit debian-package
