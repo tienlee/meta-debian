@@ -20,6 +20,7 @@ EXTRA_OECONF = " \
 	--cross-compiler="${CC}" \
 	--cross-cflags="${CFLAGS} -g" --cross-ldflags="${LDFLAGS}" \
 	--enable-debug-gdb \
+	CC="${BUILD_CC}" \
 "
 
 do_configure() {
