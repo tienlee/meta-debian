@@ -8,7 +8,7 @@ LICENSE = "GPLv2+ & LGPL-2.1+ & MIT & GPLv3+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 					file://libmissing/float.c;beginline=2;endline=16;md5=ac398b98ab705f792d9b261a4d6d59fd \
 					file://install-sh;beginline=6;endline=27;md5=eb067d0ae3938e8e21c21d62c608fdfd \
-					file://config.sub;beginline=7;endline=25;md5=f92d7033ace1653856cc3084ddc33960 \
+					file://libmissing/tests/fpucw.h;beginline=1;endline=16;md5=a6bfa02cb1fad5b21adaa0d55d9fd81e \
 					"
 
 inherit debian-package
