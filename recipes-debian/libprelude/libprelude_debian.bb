@@ -15,7 +15,7 @@ SRC_URI += " \
     file://libprelude-fix-generate-perl-makefile.patch \
 "
 
-inherit autotools pkgconfig cpan-base distutils-base perlnative
+inherit autotools pkgconfig cpan-base distutils-base perlnative binconfig
 
 EXTRA_AUTORECONF += "-I ${S}/libmissing/m4"
 
