@@ -144,7 +144,7 @@ do_install_append() {
 
 FILES_${PN} += "${bindir}"
 
-INITSCRIPT_NAME = "syslog"
+INITSCRIPT_NAME = "rsyslog"
 INITSCRIPT_PARAMS = "defaults"
 
 CONFFILES_${PN} = "${sysconfdir}/rsyslog.conf"
