@@ -90,6 +90,8 @@ do_install_append() {
 	# in update-alternatives to fail, therefore use lbracket - the name used
 	# for the actual source file.
 	mv ${D}${bindir}/[ ${D}${bindir}/lbracket.${BPN}
+
+	chown root:root -R ${D}${bindir} ${D}${base_bindir} ${D}${sbindir}
 }
 
 inherit update-alternatives
