@@ -14,13 +14,18 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 inherit debian-package
 require recipes-debian/sources/prelude-manager.inc
 
-DEPENDS = "libprelude-native gnutls libpreludedb"
+DEPENDS = "libprelude gnutls libpreludedb"
 
-inherit autotools-brokensep gettext pkgconfig
+inherit autotools-brokensep gettext pkgconfig useradd
 
 EXTRA_OECONF += "--with-libev=embedded"
 
 EXTRA_AUTORECONF += "-I ${S}/libmissing/m4"
+
+USERADD_PACKAGES = "${PN}"
+USERADD_PARAM_${PN} = "--system --no-create-home \
+                       --home ${localstatedir}/run/prelude-manager \
+                       --user-group prelude"
 
 do_install_append () {
 	install -dm644 ${D}${datadir}/prelude-manager/
@@ -28,4 +33,20 @@ do_install_append () {
 	rmdir ${D}${localstatedir}/run/prelude-manager
 	rmdir ${D}${localstatedir}/run
 	install -dm644 ${D}${localstatedir}/spool/prelude/prelude-manager
+}
+
+pkg_postinst_${PN} () {
+	cp $D${datadir}/prelude-manager/prelude-manager.conf $D${sysconfdir}/prelude-manager/prelude-manager.conf
+	chmod 640 $D${sysconfdir}/prelude-manager/prelude-manager.conf
+	chown prelude $D${sysconfdir}/prelude-manager/prelude-manager.conf
+
+	if [ -d "$D${localstatedir}/spool/prelude-manager" ]; then
+		chown prelude:prelude $D${localstatedir}/spool/prelude-manager
+		if [ -d "$D${localstatedir}/spool/prelude-manager/failover" ]; then
+			chown -R prelude:prelude $D${localstatedir}/spool/prelude-manager/failover
+		fi
+		if [ -d "$D${localstatedir}/spool/prelude-manager/scheduler" ]; then
+			chown -R prelude:prelude $D${localstatedir}/spool/prelude-manager/scheduler
+		fi
+	fi
 }

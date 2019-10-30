@@ -16,7 +16,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 inherit debian-package
 require recipes-debian/sources/libpreludedb.inc
 
-DEPENDS = "libprelude-native libprelude gnutls libtool"
+DEPENDS = "libprelude gnutls libtool sqlite3"
 
 inherit autotools pkgconfig distutils-base
 
@@ -24,7 +24,7 @@ SRC_URI += "file://libpreludedb-fix-generate-python2-makefile.patch"
 
 EXTRA_OECONF += "--with-mysql=no \
 				 --with-postgresql=no \
-				 --with-sqlite3=no \
+				 --with-sqlite3=${STAGING_INCDIR}/.. \
 				 --enable-easy-bindings"
 
 EXTRA_AUTORECONF += "-I ${S}/libmissing/m4"
