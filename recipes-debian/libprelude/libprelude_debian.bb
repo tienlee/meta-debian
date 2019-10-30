@@ -52,4 +52,4 @@ FILES_libpreludecpp = "${libdir}/libpreludecpp${SOLIBS}"
 FILES_prelude-utils = "${bindir}/prelude-admin ${sysconfdir}/prelude/default/*.conf"
 FILES_python-prelude = "${libdir}/python*/*"
 
-BBCLASSEXTEND = "native"
+RRECOMMENDS_${PN}_class-target = "prelude-utils"
