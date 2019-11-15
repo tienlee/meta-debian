@@ -1,0 +1,30 @@
+# base patch: meta/recipes-extended/logrotate/logrotate/disable-check-different-filesystems.patch
+# base branch: warrior
+
+The logrotate supports rotate log across different filesystems now, so
+disable the check for different filesystems.
+
+Upstream-Status: Pending
+
+Signed-off-by: Robert Yang <liezhi.yang@windriver.com>
+
+diff --git a/config.c b/config.c
+index 84db36f..584ed5f 100644
+--- a/config.c
++++ b/config.c
+@@ -1771,15 +1771,6 @@ static int readConfigFile(const char *configFile, struct logInfo *defConfig)
+ 							goto error;
+ 						}
+ 					}
+-
+-					if (sb.st_dev != sb2.st_dev
+-						&& !(newlog->flags & (LOG_FLAG_COPYTRUNCATE | LOG_FLAG_COPY | LOG_FLAG_TMPFILENAME))) {
+-						message(MESS_ERROR,
+-							"%s:%d olddir %s and log file %s "
+-							"are on different devices\n", configFile,
+-							lineNum, newlog->oldDir, newlog->files[i]);
+-						goto error;
+-					}
+ 				}
+ 			}
+ 
