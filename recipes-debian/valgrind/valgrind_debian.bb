@@ -7,45 +7,46 @@ BUGTRACKER = "http://valgrind.org/support/bug_reports.html"
 LICENSE = "GPLv2 & GPLv2+ & BSD"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
-					file://include/pub_tool_basics.h;beginline=6;endline=29;md5=d4de0407239381463cf01dd276d7c22e \
-					file://include/valgrind.h;beginline=1;endline=56;md5=ad3b317f3286b6b704575d9efe6ca5df \
-					file://COPYING.DOCS;md5=24ea4c7092233849b4394699333b5c56"
+                    file://include/pub_tool_basics.h;beginline=6;endline=29;md5=d4de0407239381463cf01dd276d7c22e \
+                    file://include/valgrind.h;beginline=1;endline=56;md5=ad3b317f3286b6b704575d9efe6ca5df \
+                    file://COPYING.DOCS;md5=24ea4c7092233849b4394699333b5c56 \
+                    "
 
 inherit debian-package
 require recipes-debian/sources/valgrind.inc
 
 X11DEPENDS = "virtual/libx11"
 DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'x11', '${X11DEPENDS}', '', d)} \
-			${@bb.utils.contains('DISTRO_FEATURES', 'ptest', 'boost', '', d)} \
-			"
+            ${@bb.utils.contains('DISTRO_FEATURES', 'ptest', 'boost', '', d)} \
+            "
 
 FILESPATH_append = ":${COREBASE}/meta/recipes-devtools/valgrind/valgrind"
 SRC_URI += "file://fixed-perl-path.patch \
-			file://Added-support-for-PPC-instructions-mfatbu-mfatbl.patch \
-			file://run-ptest \
-			file://0004-Fix-out-of-tree-builds.patch \
-			file://0005-Modify-vg_test-wrapper-to-support-PTEST-formats.patch \
-			file://0001-Remove-tests-that-fail-to-build-on-some-PPC32-config.patch \
-			file://use-appropriate-march-mcpu-mfpu-for-ARM-test-apps.patch \
-			file://avoid-neon-for-targets-which-don-t-support-it.patch \
-			file://valgrind-make-ld-XXX.so-strlen-intercept-optional.patch \
-			file://0001-makefiles-Drop-setting-mcpu-to-cortex-a8-on-arm-arch.patch \
-			file://0001-str_tester.c-Limit-rawmemchr-test-to-glibc.patch \
-			file://0001-sigqueue-Rename-_sifields-to-__si_fields-on-musl.patch \
-			file://0002-context-APIs-are-not-available-on-musl.patch \
-			file://0003-correct-include-directive-path-for-config.h.patch \
-			file://0004-pth_atfork1.c-Define-error-API-for-musl.patch \
-			file://0005-tc20_verifywrap.c-Fake-__GLIBC_PREREQ-with-musl.patch \
-			file://0006-pth_detached3.c-Dereference-pthread_t-before-adding-.patch \
-			file://0001-memcheck-arm64-Define-__THROW-if-not-already-defined.patch \
-			file://0002-memcheck-x86-Define-__THROW-if-not-defined.patch \
-			file://0003-tests-seg_override-Replace-__modify_ldt-with-syscall.patch \
-			file://0001-fix-opcode-not-supported-on-mips32-linux.patch \
-			file://0001-Guard-against-__GLIBC_PREREQ-for-musl-libc.patch \
-			file://0001-Make-local-functions-static-to-avoid-assembler-error.patch \
-			file://0001-tests-amd64-Do-not-clobber-rsp-register.patch \
-			file://0001-Fix-dependencies-between-libcoregrind-.a-and-m_main..patch \
-			"
+            file://Added-support-for-PPC-instructions-mfatbu-mfatbl.patch \
+            file://run-ptest \
+            file://0004-Fix-out-of-tree-builds.patch \
+            file://0005-Modify-vg_test-wrapper-to-support-PTEST-formats.patch \
+            file://0001-Remove-tests-that-fail-to-build-on-some-PPC32-config.patch \
+            file://use-appropriate-march-mcpu-mfpu-for-ARM-test-apps.patch \
+            file://avoid-neon-for-targets-which-don-t-support-it.patch \
+            file://valgrind-make-ld-XXX.so-strlen-intercept-optional.patch \
+            file://0001-makefiles-Drop-setting-mcpu-to-cortex-a8-on-arm-arch.patch \
+            file://0001-str_tester.c-Limit-rawmemchr-test-to-glibc.patch \
+            file://0001-sigqueue-Rename-_sifields-to-__si_fields-on-musl.patch \
+            file://0002-context-APIs-are-not-available-on-musl.patch \
+            file://0003-correct-include-directive-path-for-config.h.patch \
+            file://0004-pth_atfork1.c-Define-error-API-for-musl.patch \
+            file://0005-tc20_verifywrap.c-Fake-__GLIBC_PREREQ-with-musl.patch \
+            file://0006-pth_detached3.c-Dereference-pthread_t-before-adding-.patch \
+            file://0001-memcheck-arm64-Define-__THROW-if-not-already-defined.patch \
+            file://0002-memcheck-x86-Define-__THROW-if-not-defined.patch \
+            file://0003-tests-seg_override-Replace-__modify_ldt-with-syscall.patch \
+            file://0001-fix-opcode-not-supported-on-mips32-linux.patch \
+            file://0001-Guard-against-__GLIBC_PREREQ-for-musl-libc.patch \
+            file://0001-Make-local-functions-static-to-avoid-assembler-error.patch \
+            file://0001-tests-amd64-Do-not-clobber-rsp-register.patch \
+            file://0001-Fix-dependencies-between-libcoregrind-.a-and-m_main..patch \
+            "
 
 COMPATIBLE_HOST = '(i.86|x86_64|arm|aarch64|mips|powerpc|powerpc64).*-linux'
 
@@ -164,3 +165,4 @@ do_install_ptest() {
 	# handle multilib
 	sed -i s:@libdir@:${libdir}:g ${D}${PTEST_PATH}/run-ptest
 }
+
