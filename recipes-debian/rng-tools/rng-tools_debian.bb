@@ -9,9 +9,9 @@ inherit debian-package
 require recipes-debian/sources/rng-tools.inc
 
 SRC_URI += "file://fix-security-format.patch \
-			file://avoid-ar-warning-messages.patch \
-			file://0002-Add-argument-to-control-the-libargp-dependency.patch \
-			"
+            file://avoid-ar-warning-messages.patch \
+            file://0002-Add-argument-to-control-the-libargp-dependency.patch \
+            "
 
 FILESPATH_append = ":${COREBASE}/meta/recipes-support/rng-tools/rng-tools"
 SRC_URI += "file://rngd.service"
@@ -48,3 +48,4 @@ INITSCRIPT_NAME = "${PN}"
 INITSCRIPT_PARAMS = "start 03 2 3 4 5 . stop 30 0 6 1 ."
 
 SYSTEMD_SERVICE_${PN} = "rngd.service"
+
