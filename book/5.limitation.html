@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Getting Started - meta-debian</title>
+        <title>Limitation - meta-debian</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="1.getting_started.html" class="active"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="5.limitation.html"><strong aria-hidden="true">5.</strong> Limitation</a></li><li class="affix"><a href="appendix.html">Appendix</a></li><li class="affix"><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
+            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="5.limitation.html" class="active"><strong aria-hidden="true">5.</strong> Limitation</a></li><li class="affix"><a href="appendix.html">Appendix</a></li><li class="affix"><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -140,103 +140,32 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="#what-is-meta-debian" id="what-is-meta-debian"><h1>What is meta-debian?</h1></a>
-<p>meta-debian is a set of recipes (metadata) for the poky build system,
-which allows cross-building GNU/Linux images using Debian source packages.
-By enabling meta-debian, you can cross-build a small GNU/Linux image
-with Debian sources for multiple architectures.</p>
-<p>The main purpose of meta-debian is to provide reference Linux distribution
-for embedded systems satisfying the following needs.</p>
-<ul>
-<li>Long-term support</li>
-<li>Stability</li>
-<li>Wide embedded CPU support</li>
-<li>Customizability</li>
-</ul>
-<p>Currently, the following software versions are supported in meta-debian.</p>
-<ul>
-<li>Source code: Debian GNU/Linux 10 (buster)</li>
-<li>Build system: Yocto Project (warrior)</li>
-</ul>
-<a class="header" href="#quick-start" id="quick-start"><h1>Quick Start</h1></a>
-<p>meta-debian can be built in a docker container or on a Linux machine (native build).</p>
-<a class="header" href="#setup-build-environment" id="setup-build-environment"><h3>Setup build environment</h3></a>
-<p>Clone meta-debian:</p>
-<pre><code class="language-sh">$ git clone -b warrior https://github.com/meta-debian/meta-debian.git
-</code></pre>
-<ul>
-<li>
-<p>For docker build:</p>
-<pre><code class="language-sh">$ cd meta-debian
-$ make -C docker
-</code></pre>
-</li>
-<li>
-<p>For native build:</p>
-<ul>
-<li>
-<p>Install essential packages poky requires into your host system according to
-<a href="https://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-packages-for-the-build-host">https://www.yoctoproject.org/docs/2.7/ref-manual/ref-manual.html#required-packages-for-the-build-host</a></p>
-<pre><code class="language-sh">$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
-build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
-xz-utils debianutils iputils-ping
-</code></pre>
-<p>NOTE: The following three packages have version limitation</p>
-<ul>
-<li>git: 1.8.3.1 or greater</li>
-<li>tar: 1.27 or greater</li>
-<li>python: 3.4.0 or greater</li>
-</ul>
-</li>
-<li>
-<p>Setup repositories</p>
-<pre><code class="language-sh">$ git clone -b warrior git://git.yoctoproject.org/poky.git
-$ mv meta-debian poky/
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<a class="header" href="#build" id="build"><h3>Build</h3></a>
-<pre><code class="language-sh">export TEMPLATECONF=meta-debian/conf
-source ./poky/oe-init-build-env
-</code></pre>
-<p>You can change the target machine by setting <code>MACHINE</code> variable
-in <code>conf/local.conf</code> to one of the following machines.</p>
-<ul>
-<li>qemux86 (default)</li>
-<li>qemux86-64</li>
-<li>qemuarm</li>
-<li>qemuarm64</li>
-<li>qemuppc</li>
-<li>qemumips</li>
-</ul>
-<p>For example, the target machine is set to QEMU ARM by adding
-the following difinition to <code>conf/local.conf</code>.</p>
-<pre><code>MACHINE = &quot;qemuarm&quot;
-</code></pre>
-<p>Now, the build system is ready.
-Build Linux kernel and the minimal rootfs by the following command.
-It takes a while to complete (more than 30 minutes).</p>
-<pre><code class="language-sh">bitbake core-image-minimal
-</code></pre>
-<a class="header" href="#run-the-built-linux-on-qemu" id="run-the-built-linux-on-qemu"><h3>Run the built Linux on QEMU</h3></a>
-<p>Please replace <code>${MACHINE}</code> by the target machine
-you selected in the above step.</p>
-<p>NOTE: Confirm that the tun module, which runqemu depends on,
-is correctly loaded in your system.</p>
-<pre><code class="language-sh">runqemu ${MACHINE} nographic
-</code></pre>
-<p>After boot, you can login as <code>root</code> without password.</p>
+                        <a class="header" href="#recipes-cannot-use-debian-10-source-code" id="recipes-cannot-use-debian-10-source-code"><h1>Recipes cannot use Debian 10 source code</h1></a>
+<a class="header" href="#apt-native" id="apt-native"><h2>apt-native</h2></a>
+<p>Poky is using apt version 1.2.24.
+Debian 10 apt (1.8.2) does not provide option  <code>--force-yes</code> which is required by
+<em>meta/lib/oe/package_manager.py</em>.</p>
+<a class="header" href="#prelink-native" id="prelink-native"><h2>prelink-native</h2></a>
+<p>Poky has its own <a href="http://git.yoctoproject.org/cgit.cgi/prelink-cross">prelink-cross</a> package.
+Debian 10 prelink (0.0.20131005-1+b10) does not support changing root directory
+which is required by <em>meta/classes/image-prelink.bbclass</em>.</p>
+<a class="header" href="#packageconfig-variation-support" id="packageconfig-variation-support"><h1>PACKAGECONFIG variation support</h1></a>
+<p>For now, to keep meta-debian minimal and reduce effort of maintenance,
+meta-debian only provides recipes to support PACKAGECONFIG features which are enabled by default.
+More recipes may be added in future if there are any requests.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="4.bsp/4.2.pi.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="2.components.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="appendix.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -248,9 +177,13 @@ is correctly loaded in your system.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a href="4.bsp/4.2.pi.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a href="2.components.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="appendix.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

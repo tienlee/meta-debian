@@ -75,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="5.appendix.html"><strong aria-hidden="true">5.</strong> Appendix</a></li><li class="affix"><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
+            <ol class="chapter"><li><a href="1.getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="2.components.html"><strong aria-hidden="true">2.</strong> Components</a></li><li><a href="3.development.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="3.development/3.1.create_recipe.html"><strong aria-hidden="true">3.1.</strong> Create recipe</a></li><li><a href="3.development/3.2.example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li><a href="4.bsp.html"><strong aria-hidden="true">4.</strong> BSP</a></li><li><ol class="section"><li><a href="4.bsp/4.1.bbb.html"><strong aria-hidden="true">4.1.</strong> BeagleBone Black</a></li><li><a href="4.bsp/4.2.pi.html"><strong aria-hidden="true">4.2.</strong> Raspberry Pi</a></li></ol></li><li><a href="5.limitation.html"><strong aria-hidden="true">5.</strong> Limitation</a></li><li class="affix"><a href="appendix.html">Appendix</a></li><li class="affix"><a href="community_resources.html">Community Resources</a></li><li class="affix"><a href="license.html">LICENSE</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -308,7 +308,7 @@ The next section will show you how to create a recipe in <code>meta-debian</code
 <p>Firstly, create an empty file which will store source code information:</p>
 <pre><code class="language-sh">touch recipes-debian/sources/&lt;source_name&gt;.inc
 </code></pre>
-<p>Enable <code>debian-source</code> in <code>&lt;buildir&gt;/conf/local.conf</code>:</p>
+<p>Enable <code>debian-source</code> in <code>&lt;your buildir&gt;/conf/local.conf</code>:</p>
 <pre><code class="language-sh">DEBIAN_SOURCE_ENABLED = &quot;1&quot;
 DEBIAN_SRC_FORCE_REGEN = &quot;1&quot;
 </code></pre>
@@ -357,6 +357,9 @@ Ex:</p>
 <pre><code class="language-sh">FILESPATH_append = &quot;:${COREBASE}/meta/recipes-devtools/sample/sample&quot;
 SRC_URI += &quot;file://sample.patch&quot;
 </code></pre>
+<p><em>Note: Security fixes should be managed by Debian in source package,
+so don't reuse patches, which relate to CVE or security bugs, in meta-debian.
+It is better to wait for Debian maintainers apply patch into source code.</em></p>
 </li>
 </ul>
 <a class="header" href="#configuration-and-packages-split" id="configuration-and-packages-split"><h3>Configuration and packages split</h3></a>
@@ -374,9 +377,7 @@ split packages same as Poky recipe to avoid conflict.</li>
 
 # Enable debian-source
 echo 'DEBIAN_SOURCE_ENABLED = &quot;1&quot;' &gt;&gt; &lt;build-dir&gt;/conf/local.conf
-
 # Force debian-source re-generate in case Sources.xz doesn't change
-# Ignore this step if you already set DEBIAN_SRC_FORCE_REGEN to &quot;1&quot;
 echo 'DEBIAN_SRC_FORCE_REGEN = &quot;1&quot;' &gt;&gt; &lt;build-dir&gt;/conf/local.conf
 </code></pre>
 </li>
@@ -621,6 +622,19 @@ and want to use serial console, you can enable it by edit config files in boot p
 <p>Boot the SD card on the board and login with <code>root</code> (no password).</p>
 </li>
 </ol>
+<a class="header" href="#recipes-cannot-use-debian-10-source-code" id="recipes-cannot-use-debian-10-source-code"><h1>Recipes cannot use Debian 10 source code</h1></a>
+<a class="header" href="#apt-native" id="apt-native"><h2>apt-native</h2></a>
+<p>Poky is using apt version 1.2.24.
+Debian 10 apt (1.8.2) does not provide option  <code>--force-yes</code> which is required by
+<em>meta/lib/oe/package_manager.py</em>.</p>
+<a class="header" href="#prelink-native" id="prelink-native"><h2>prelink-native</h2></a>
+<p>Poky has its own <a href="http://git.yoctoproject.org/cgit.cgi/prelink-cross">prelink-cross</a> package.
+Debian 10 prelink (0.0.20131005-1+b10) does not support changing root directory
+which is required by <em>meta/classes/image-prelink.bbclass</em>.</p>
+<a class="header" href="#packageconfig-variation-support" id="packageconfig-variation-support"><h1>PACKAGECONFIG variation support</h1></a>
+<p>For now, to keep meta-debian minimal and reduce effort of maintenance,
+meta-debian only provides recipes to support PACKAGECONFIG features which are enabled by default.
+More recipes may be added in future if there are any requests.</p>
 <a class="header" href="#appendix" id="appendix"><h1>Appendix</h1></a>
 <a class="header" href="#version-comparison" id="version-comparison"><h2>Version comparison</h2></a>
 <p>Below is the packages version comparison between Debian 10 and Poky.

@@ -8,7 +8,8 @@
 - [BSP](./4.bsp.md)
   - [BeagleBone Black](./4.bsp/4.1.bbb.md)
   - [Raspberry Pi](./4.bsp/4.2.pi.md)
-- [Appendix](./5.appendix.md)
+- [Limitation](./5.limitation.md)
 
+[Appendix](./appendix.md)
 [Community Resources](./community_resources.md)  
 [LICENSE](./license.md)
