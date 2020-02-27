@@ -79,12 +79,18 @@ def get_gnu_suffix(arch, tune):
 # https://wiki.ubuntu.com/MultiarchSpec
 DEBIAN_CONTROL ?= "${DEBIAN_UNPACK_DIR}/debian/control"
 def deb_ctrl_multi_arch(d):
-    def add_multi_arch_metadata(package, multi_arch):
-        metadata = d.getVar("PACKAGE_ADD_METADATA_DEB_" + package, True)
-        if not metadata:
-            metadata = ""
-        metadata = metadata.rstrip() + "\n" + "Multi-Arch: " + multi_arch
-        d.setVar("PACKAGE_ADD_METADATA_DEB_" + package, metadata)
+    def add_multi_arch_metadata(pkg, multi_arch):
+        pkgdest = d.getVar('PKGDEST', True)
+        root = "%s/%s" % (pkgdest, pkg)
+        controldir = os.path.join(root, 'DEBIAN')
+        try:
+            import codecs
+            ctrlfile = codecs.open(os.path.join(controldir, 'control'), 'w', 'utf-8')
+        except OSError:
+            bb.utils.unlockfile(lf)
+            bb.fatal("unable to open control file for writing")
+        ctrlfile.write("Multi-Arch: %s" % multi_arch)
+        ctrlfile.close()
 
 
     # if PACKAGE_ARCH is 'all', do_package_deb will auto write "Multi-Arch: foreign"
